@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -10,7 +11,7 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import NightsStayIcon from '@mui/icons-material/NightsStay';
-import { Link } from 'react-router-dom';
+import HomeIcon from '@mui/icons-material/Home';
 
 const pages = [
   {title:'Weather', link:'/weather'},
@@ -33,7 +34,7 @@ function Header() {
     <AppBar position="static" sx={{ borderRadius: 10 }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <NightsStayIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <NightsStayIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 2 }} />
           <Typography
             variant="h6"
             noWrap
@@ -51,7 +52,6 @@ function Header() {
           >
             My Weather App
           </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -111,6 +111,11 @@ function Header() {
                   </Button>
               </Link>
             ))}
+          </Box>
+          <Box>
+            <Link to='/' style={{ color:'inherit' }}>
+              <HomeIcon/>
+            </Link>
           </Box>
         </Toolbar>
       </Container>
