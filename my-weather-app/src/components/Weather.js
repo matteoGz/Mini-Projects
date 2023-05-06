@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
 import { Box, Button, FormControl, InputLabel, OutlinedInput, Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -14,20 +14,21 @@ export default function Weather(){
     }
 
     function searchCity() {
+    //to get coordinates of input city
         axios.get('https://nominatim.openstreetmap.org/search?q='+selectedCity+'&format=json')
-        .then((response) => {
-            console.log(response.data[0]);
-            setCoordinates(response.data[0]);
-        })
-        .catch(() => console.error("Req city info failed"))
-        if(coordinates.lat && coordinates.lon !== undefined){
-            axios.get("https://api.open-meteo.com/v1/forecast?latitude="+coordinates.lat+"&longitude="+coordinates.lon+"&hourly=temperature_2m,precipitation_probability,weathercode&models=best_match&current_weather=true&forecast_days=1")
             .then((response) => {
-                console.log(response.data);
-                setCurrentInfo(response.data);
+                console.log(response.data[0]);
+                setCoordinates(response.data[0]);
+            //to get weather info
+                axios.get("https://api.open-meteo.com/v1/forecast?latitude="+response.data[0].lat+"&longitude="+
+                          response.data[0].lon+"&hourly=temperature_2m,precipitation_probability,weathercode&models=best_match&current_weather=true&forecast_days=1")
+                    .then((response) => {
+                        console.log(response.data);
+                        setCurrentInfo(response.data);
+                    })
+                    .catch(() => console.error("Req weather info failed"))
             })
-            .catch(() => console.error("Req weather info failed"))
-        }
+            .catch(() => console.error("Req city info failed"))
     }
 
 
