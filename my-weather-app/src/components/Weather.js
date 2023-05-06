@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Box, Button, FormControl, InputLabel, OutlinedInput, Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { weatherByWmoCode } from '../models/weatherByWmoCode';
 
 export default function Weather(){
     const[selectedCity, setSelectedCity] = useState('')
@@ -56,8 +57,8 @@ export default function Weather(){
                     {currentInfo.current_weather.temperature + currentInfo.hourly_units.temperature_2m}
                 </Typography>
                 <Typography variant='h6'>
-                    Weather code(WMO code):
-                    {currentInfo.current_weather.weathercode}
+                    Weather code(WMO code): 
+                    {weatherByWmoCode[currentInfo.current_weather.weathercode]}
                 </Typography>
                 <Typography variant='h6'>
                     Precipitation probability:
