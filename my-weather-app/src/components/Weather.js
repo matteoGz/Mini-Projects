@@ -4,9 +4,13 @@ import { Box, Button, FormControl, InputLabel, OutlinedInput, Typography } from 
 import SearchIcon from '@mui/icons-material/Search';
 import { weatherByWmoCode } from '../models/weatherByWmoCode';
 
+//api Key to retrieve photo of selected city
+const photoKey = "36153502-ff5ba4e1922e4ae564dfa46bd";
+
 export default function Weather(){
     const[selectedCity, setSelectedCity] = useState('')
     const[coordinates, setCoordinates] = useState({});
+    const[cityPhoto, setCityPhoto] = useState({});
     const[currentInfo, setCurrentInfo] = useState({});
 
     const handleChangeCity= (event) => {
@@ -19,6 +23,13 @@ export default function Weather(){
             .then((response) => {
                 console.log(response.data[0]);
                 setCoordinates(response.data[0]);
+            //to get selected city's photo
+                axios.get("https://pixabay.com/api/?key="+photoKey+"&q="+selectedCity)
+                    .then((response)=> {
+                        console.log(response.data.hits[0]);
+                        setCityPhoto(response.data.hits[0]);    
+                    })
+                    .catch(() => console.error("Req city photo failed"))
             //to get weather info
                 axios.get("https://api.open-meteo.com/v1/forecast?latitude="+response.data[0].lat+"&longitude="+
                           response.data[0].lon+"&hourly=temperature_2m,precipitation_probability,weathercode&models=best_match&current_weather=true&forecast_days=1")
@@ -53,6 +64,7 @@ export default function Weather(){
         </FormControl>
         {Object.keys(currentInfo).length !== 0 ?
             <Box>
+                <img src={cityPhoto.webformatURL} alt={cityPhoto.tags}></img>
                 <Typography variant='h6'>
                     Temperature:
                     {currentInfo.current_weather.temperature + currentInfo.hourly_units.temperature_2m}
