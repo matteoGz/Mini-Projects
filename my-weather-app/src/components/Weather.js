@@ -52,7 +52,6 @@ export default function Weather(){
     return(
         <Grid container
             sx={{
-                textAlign:'center',
                 borderRadius: 10, 
                 backgroundImage: 'url('+cityPhoto.largeImageURL+')',
                 backgroundSize:"cover",
@@ -60,29 +59,33 @@ export default function Weather(){
                 minHeight: "500px"
             }}
             >
-            <Grid item xs={12}>
-                <FormControl sx={{ marginTop: 5, marginBottom:5 }}>
-                    <InputLabel htmlFor="outlined-city">City</InputLabel>
-                    <OutlinedInput
-                        id="outlined-city"
-                        label="City"
-                        sx={{ borderRadius: 10 }}
-                        onChange={handleChangeCity}
-                    />
-                    <Button
-                        variant='contained'
-                        sx={{ borderRadius: 10 }}
-                        endIcon={<SearchIcon/>}
-                        onClick={() => searchCity()}
-                    >
-                        Search
-                    </Button>
-                </FormControl>
+            <Grid item xs={2}>
+                <Card sx={{ backgroundColor: "rgba(255, 255, 255, 0.5)"}}>
+                    <CardContent>
+                        <FormControl sx={{ marginTop: 5, marginBottom:5 }}>
+                            <InputLabel htmlFor="outlined-city">City</InputLabel>
+                            <OutlinedInput
+                                id="outlined-city"
+                                label="City"
+                                sx={{ borderRadius: 10 }}
+                                onChange={handleChangeCity}
+                            />
+                            <Button
+                                variant='contained'
+                                sx={{ borderRadius: 10 }}
+                                endIcon={<SearchIcon/>}
+                                onClick={() => searchCity()}
+                            >
+                                Search
+                            </Button>
+                        </FormControl>
+                    </CardContent>
+                </Card>
             </Grid>
             {Object.keys(weatherInfo).length !== 0 ?
                 <> 
                     <Grid item xs={4} marginX={'33.33%'}>    
-                        <Card sx={{ backgroundColor: "rgba(255, 255, 255, 0.5)", borderRadius: 10 }}>
+                        <Card elevation={5} sx={{ backgroundColor: "rgba(255, 255, 255, 0.5)", borderRadius: 10 }}>
                             <CardContent>
                                 <Typography variant='h6'>
                                     Temperature:
@@ -103,7 +106,7 @@ export default function Weather(){
                 { //today hourly weather 
                  Object.keys(hourlyWeather).length > 0 ?
                     <Grid item xs={9}>
-                        <Accordion>
+                        <Accordion elevation={5}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreRounded/>}
                                 aria-controls="hourlyWeather-content"
@@ -164,7 +167,7 @@ export default function Weather(){
                 { //next 7days weather 
                  Object.keys(hourlyWeather).length > 0 ?
                     <Grid item xs={9}>
-                        <Accordion>
+                        <Accordion elevation={5}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreRounded/>}
                                 aria-controls="hourlyWeather-content"
