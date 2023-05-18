@@ -1,9 +1,11 @@
 import React, { useState } from "react"
 import axios from "axios"
-import { Accordion, AccordionDetails, AccordionSummary, Button, Card, CardContent, FormControl, Grid, InputLabel, OutlinedInput, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
+import { Accordion, AccordionDetails, AccordionSummary, Button, Card, CardContent, Dialog, DialogContent, DialogTitle, FormControl, Grid, IconButton, InputLabel, OutlinedInput, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography, Zoom } from "@mui/material"
 import { convertHourlyTime, getDailyInfo } from "../utils/weatherUtils";
 import SearchIcon from '@mui/icons-material/Search';
 import ExpandMoreRounded from '@mui/icons-material/ExpandMoreRounded';
+import CloseIcon from '@mui/icons-material/Close'
+import { PulseIcon } from '@primer/octicons-react';
 
 //api Key to retrieve photo of selected city
 const photoKey = "36153502-ff5ba4e1922e4ae564dfa46bd";
@@ -13,6 +15,8 @@ export default function Temperature(){
     const[coordinates, setCoordinates] = useState({});
     const[cityPhoto, setCityPhoto] = useState({});
     const[temperatureInfo, setTemperatureInfo] = useState({});
+
+    const[open, setOpen] = useState(false);
 
     const handleChangeCity= (event) => {
         setSelectedCity(event.target.value)
@@ -46,7 +50,9 @@ export default function Temperature(){
     }
 
     console.log("coordinates: ", coordinates);
+    let currentTemperature = temperatureInfo.current_weather
     let hourlyTemperature = temperatureInfo.hourly;
+    let dailyTemperature = temperatureInfo.daily;
 
     return(
         <Grid container
@@ -87,13 +93,14 @@ export default function Temperature(){
                         <Card elevation={5} sx={{ backgroundColor: "rgba(255, 255, 255, 0.5)", borderRadius: 10 }}>
                             <CardContent>
                                 <Typography variant="h6">
-                                    {/*actual temperature (and apparent temp)... */}
+                                    Current temperature: {currentTemperature.temperature + temperatureInfo.hourly_units.temperature_2m}
                                 </Typography>
                             </CardContent>
                         </Card>
                     </Grid>
                 { //today hourly temperature 
                  Object.keys(hourlyTemperature).length > 0 ?
+                  <>
                     <Grid item xs={9}>
                         <Accordion elevation={5}>
                             <AccordionSummary
@@ -122,19 +129,65 @@ export default function Temperature(){
                                                 <TableCell>Temperature</TableCell>
                                                 { getDailyInfo(hourlyTemperature.temperature_2m).map((temperature, index) =>
                                                     <TableCell key={index}>
-                                                        {temperature /*hourlyTemperature.hourly_units.temperature_2m*/}
+                                                        {temperature + temperatureInfo.hourly_units.temperature_2m}
                                                     </TableCell>
                                                     )
                                                 }
                                             </TableRow>
-                                            {/* to add...according json response */}
+                                            <TableRow>
+                                                <TableCell>Apparent temperature</TableCell>
+                                                { getDailyInfo(hourlyTemperature.apparent_temperature).map((apparentTemp, index) =>
+                                                    <TableCell key={index}>
+                                                        {apparentTemp + temperatureInfo.hourly_units.apparent_temperature}
+                                                    </TableCell>
+                                                    )
+                                                }
+                                            </TableRow>
                                         </TableBody>
                                     </Table>
                                 </TableContainer>    
                             </AccordionDetails>
                         </Accordion>
                     </Grid>
-                 :  <></> }
+                    <Grid item xs={3}>
+                        <Tooltip title="Show min / max temperature" TransitionComponent={Zoom}>
+                            <Button
+                                variant="contained"
+                                onClick={() => setOpen(true)}
+                            >
+                                <PulseIcon size={35}/>
+                            </Button>
+                        </Tooltip>
+                    </Grid>
+                    { open ? 
+                        <Dialog open={open} onClose={() => setOpen(false)}>
+                            <DialogTitle fontSize={25}>
+                                Today minimum and maximum temperature
+                                <IconButton
+                                    sx={{ marginInlineStart: 3 }}
+                                    onClick={() => setOpen(false)}
+                                    >
+                                    <CloseIcon/>
+                                </IconButton>
+                            </DialogTitle>
+                            <DialogContent>
+                                <Typography variant="h6">
+                                    Max temperature: <strong>{dailyTemperature.temperature_2m_max[0] + temperatureInfo.daily_units.temperature_2m_max}</strong>
+                                </Typography>
+                                <Typography variant="h6">
+                                    Min temperature: <strong>{dailyTemperature.temperature_2m_min[0] + temperatureInfo.daily_units.temperature_2m_min}</strong>
+                                </Typography>
+                                <Typography>
+                                    Apparent max temperature: {dailyTemperature.apparent_temperature_max[0] + temperatureInfo.daily_units.apparent_temperature_max}
+                                </Typography>
+                                <Typography>
+                                    Apparent min temperature: {dailyTemperature.apparent_temperature_min[0] + temperatureInfo.daily_units.apparent_temperature_min}
+                                </Typography>
+                            </DialogContent>
+                        </Dialog>
+                     : <></>
+                    }
+                  </> : <></> }
                 </>
              :   <></> }
         </Grid>
