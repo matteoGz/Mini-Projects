@@ -1,12 +1,12 @@
 import Header from "../components/Header";
-import Location from "../components/Location";
+import AdditionalInfo from "../components/AdditionalInfo";
 import Footer from "../components/Footer";
 
-export default function LocationPage() {
+export default function AdditionalInfoPage() {
     return(
         <>
         <Header/>
-        <Location/>
+        <AdditionalInfo/>
         <Footer/>
         </>
     );

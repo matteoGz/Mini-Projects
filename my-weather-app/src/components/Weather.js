@@ -52,7 +52,6 @@ export default function Weather(){
     return(
         <Grid container
             sx={{
-                borderRadius: 10, 
                 backgroundImage: 'url('+cityPhoto.largeImageURL+')',
                 backgroundSize:"cover",
                 backgroundRepeat:'no-repeat',

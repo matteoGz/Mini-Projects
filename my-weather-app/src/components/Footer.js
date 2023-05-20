@@ -4,7 +4,7 @@ import { LogoGithubIcon, MarkGithubIcon } from '@primer/octicons-react';
 export default function Footer(){
     return(
         <footer>
-            <Container maxWidth="xl" sx={{ backgroundColor: "#1976d2" , color: "white", borderRadius: 10 }}>
+            <Container maxWidth="xl" sx={{ backgroundColor: "#1976d2" , color: "white" }}>
                 <Toolbar disableGutters sx={{ justifyContent:"center" }}>
                     <LogoGithubIcon size={18} /> 
                     <Typography variant="subtitle2">

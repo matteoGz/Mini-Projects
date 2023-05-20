@@ -16,7 +16,7 @@ import HomeIcon from '@mui/icons-material/Home';
 const pages = [
   {title:'Weather', link:'/weather'},
   {title:'Temperatures', link:'/temperatures'},
-  {title:'Locations', link:'/locations'}
+  {title:'Additional Info', link:'/additional_info'}
 ];
 
 function Header() {
@@ -31,7 +31,7 @@ function Header() {
   };
   
   return (
-    <AppBar position="static" sx={{ borderRadius: 10 }}>
+    <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <NightsStayIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 2 }} />

@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import axios from "axios"
 import { Accordion, AccordionDetails, AccordionSummary, Button, Card, CardContent, Dialog, DialogContent, DialogTitle, FormControl, Grid, IconButton, InputLabel, OutlinedInput, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography, Zoom } from "@mui/material"
-import { convertHourlyTime, getDailyInfo } from "../utils/weatherUtils";
+import { convertDateFormat, convertHourlyTime, getDailyInfo, getNext7DaysInfo } from "../utils/weatherUtils";
 import SearchIcon from '@mui/icons-material/Search';
 import ExpandMoreRounded from '@mui/icons-material/ExpandMoreRounded';
 import CloseIcon from '@mui/icons-material/Close'
@@ -16,7 +16,8 @@ export default function Temperature(){
     const[cityPhoto, setCityPhoto] = useState({});
     const[temperatureInfo, setTemperatureInfo] = useState({});
 
-    const[open, setOpen] = useState(false);
+    const[openToday, setOpenToday] = useState(false);
+    const[openNextD, setOpenNextD] = useState(false);
 
     const handleChangeCity= (event) => {
         setSelectedCity(event.target.value)
@@ -57,7 +58,6 @@ export default function Temperature(){
     return(
         <Grid container
             sx={{
-                borderRadius: 10, 
                 backgroundImage: 'url('+cityPhoto.largeImageURL+')',
                 backgroundSize:"cover",
                 backgroundRepeat:'no-repeat',
@@ -87,7 +87,7 @@ export default function Temperature(){
                     </CardContent>
                 </Card> 
             </Grid>
-            {Object.keys(temperatureInfo).length !== 0 ?
+            { Object.keys(temperatureInfo).length !== 0 ?
                 <> 
                     <Grid item xs={4} marginX={'33.33%'}>    
                         <Card elevation={5} sx={{ backgroundColor: "rgba(255, 255, 255, 0.5)", borderRadius: 10 }}>
@@ -153,19 +153,19 @@ export default function Temperature(){
                         <Tooltip title="Show min / max temperature" TransitionComponent={Zoom}>
                             <Button
                                 variant="contained"
-                                onClick={() => setOpen(true)}
+                                onClick={() => setOpenToday(true)}
                             >
                                 <PulseIcon size={35}/>
                             </Button>
                         </Tooltip>
                     </Grid>
-                    { open ? 
-                        <Dialog open={open} onClose={() => setOpen(false)}>
+                    { openToday ? 
+                        <Dialog open={openToday} onClose={() => setOpenToday(false)}>
                             <DialogTitle fontSize={25}>
                                 Today minimum and maximum temperature
                                 <IconButton
                                     sx={{ marginInlineStart: 3 }}
-                                    onClick={() => setOpen(false)}
+                                    onClick={() => setOpenToday(false)}
                                     >
                                     <CloseIcon/>
                                 </IconButton>
@@ -188,6 +188,110 @@ export default function Temperature(){
                      : <></>
                     }
                   </> : <></> }
+                { Object.keys(dailyTemperature).length > 0 ?
+                    <>
+                        <Grid item xs={9}>
+                            <Accordion elevation={5}>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreRounded/>}
+                                    aria-controls="hourlyTemperature-content"
+                                    id="hourlyTemperature-header"
+                                    >
+                                    <Typography>Next 7 days</Typography>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    <TableContainer>
+                                        <Table>
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell>Time</TableCell>
+                                                    { getNext7DaysInfo(hourlyTemperature.time).map((hour, index) =>
+                                                        <TableCell key={index}>
+                                                            { convertHourlyTime(hour) }
+                                                        </TableCell>
+                                                        )
+                                                    }
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                <TableRow>
+                                                    <TableCell>Temperature</TableCell>
+                                                    { getNext7DaysInfo(hourlyTemperature.temperature_2m).map((temperature, index) =>
+                                                        <TableCell key={index}>
+                                                            {temperature + temperatureInfo.hourly_units.temperature_2m}
+                                                        </TableCell>
+                                                        )
+                                                    }
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell>Apparent temperature</TableCell>
+                                                    { getNext7DaysInfo(hourlyTemperature.apparent_temperature).map((apparentTemp, index) =>
+                                                        <TableCell key={index}>
+                                                            {apparentTemp + temperatureInfo.hourly_units.apparent_temperature}
+                                                        </TableCell>
+                                                        )
+                                                    }
+                                                </TableRow>
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
+                                </AccordionDetails>
+                            </Accordion>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Tooltip title="Show min / max temperature" TransitionComponent={Zoom}>
+                                <Button
+                                    variant="contained"
+                                    onClick={() => setOpenNextD(true)}
+                                >
+                                    <PulseIcon size={35}/>
+                                </Button>
+                            </Tooltip>
+                        </Grid>
+                        { openNextD ?
+                            <Dialog open={openNextD} onClose={() => setOpenNextD(false)}>
+                                <DialogTitle fontSize={20}>
+                                    Next 7 days minimum and maximum temperature
+                                    <IconButton
+                                        sx={{ marginInlineStart: 3 }}
+                                        onClick={() => setOpenNextD(false)}
+                                        >
+                                    <CloseIcon/>
+                                    </IconButton>
+                                </DialogTitle>
+                                <DialogContent>
+                                    <TableContainer>
+                                        <Table>
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell>Day</TableCell>
+                                                    {dailyTemperature.time.map((day, index) => <TableCell key={index}>{convertDateFormat(day)}</TableCell>)}
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                <TableRow>
+                                                    <TableCell>Max temperature</TableCell>
+                                                    {dailyTemperature.temperature_2m_max.map((maxTemp, index) => <TableCell key={index}>{maxTemp + temperatureInfo.daily_units.temperature_2m_max}</TableCell>)}
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell>Min temperature</TableCell>
+                                                    {dailyTemperature.temperature_2m_min.map((minTemp, index) => <TableCell key={index}>{minTemp + temperatureInfo.daily_units.temperature_2m_min}</TableCell>)}
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell>Apparent max temperature</TableCell>
+                                                    {dailyTemperature.apparent_temperature_max.map((apparentMaxTemp, index) => <TableCell key={index}>{apparentMaxTemp + temperatureInfo.daily_units.apparent_temperature_max}</TableCell>)}
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell>Apparent min temperature</TableCell>
+                                                    {dailyTemperature.apparent_temperature_min.map((apparentMinTemp, index) => <TableCell key={index}>{apparentMinTemp + temperatureInfo.daily_units.apparent_temperature_min}</TableCell>)}
+                                                </TableRow>
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
+                                </DialogContent>
+                            </Dialog>
+                          : <></> }    
+                    </> : <></> }
                 </>
              :   <></> }
         </Grid>
