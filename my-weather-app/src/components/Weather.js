@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import { Accordion, AccordionDetails, AccordionSummary, Button, Card, CardContent, FormControl, Grid, InputLabel, OutlinedInput, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Button, Card, CardContent, CircularProgress, Dialog, DialogContent, FormControl, Grid, InputLabel, OutlinedInput, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { weatherByWmoCode } from '../models/weatherByWmoCode';
 import { convertHourlyTime, getDailyInfo, getNext7DaysInfo } from '../utils/weatherUtils';
 import SearchIcon from '@mui/icons-material/Search';
@@ -10,7 +10,9 @@ import ExpandMoreRounded from '@mui/icons-material/ExpandMoreRounded';
 const photoKey = "36153502-ff5ba4e1922e4ae564dfa46bd";
 
 export default function Weather(){
-    const[selectedCity, setSelectedCity] = useState('')
+    const[isSearched, setIsSearched] = useState(false);
+
+    const[selectedCity, setSelectedCity] = useState('');
     const[coordinates, setCoordinates] = useState({});
     const[cityPhoto, setCityPhoto] = useState({});
     const[weatherInfo, setWeatherInfo] = useState({});
@@ -20,6 +22,7 @@ export default function Weather(){
     }
 
     function searchCity() {
+        setIsSearched(true)
     //to get coordinates of input city
         axios.get('https://nominatim.openstreetmap.org/search?q='+selectedCity+'&format=json')
             .then((response) => {
@@ -36,10 +39,11 @@ export default function Weather(){
                     .catch(() => console.error("Req city photo failed"))
             //to get weather info
                 axios.get("https://api.open-meteo.com/v1/forecast?latitude="+response.data[0].lat+"&longitude="+
-                          response.data[0].lon+"&hourly=temperature_2m,precipitation_probability,weathercode&models=best_match&current_weather=true&timezone=Europe%2FBerlin")
+                        response.data[0].lon+"&hourly=temperature_2m,precipitation_probability,weathercode&models=best_match&current_weather=true&timezone=Europe%2FBerlin")
                     .then((response) => {
                         console.log(response.data);
                         setWeatherInfo(response.data);
+                        setIsSearched(false)
                     })
                     .catch(() => console.error("Req weather info failed"))
             })
@@ -81,7 +85,18 @@ export default function Weather(){
                     </CardContent>
                 </Card>
             </Grid>
-            {Object.keys(weatherInfo).length !== 0 ?
+            <Dialog open={isSearched}>
+                <DialogContent>
+                    <CircularProgress/>
+                </DialogContent>
+            </Dialog>
+            { !isSearched ?
+                <Grid item xs={10} marginX={'33.33%'} marginY={'-7%'}>
+                    <Typography>{coordinates.display_name}</Typography>
+                </Grid>
+              : <></>
+            }
+            { Object.keys(weatherInfo).length !== 0 ?
                 <> 
                     <Grid item xs={4} marginX={'33.33%'}>    
                         <Card elevation={5} sx={{ backgroundColor: "rgba(255, 255, 255, 0.5)", borderRadius: 10 }}>
@@ -101,7 +116,6 @@ export default function Weather(){
                             </CardContent>
                         </Card>
                     </Grid>
-
                 { //today hourly weather 
                  Object.keys(hourlyWeather).length > 0 ?
                     <Grid item xs={9}>
@@ -162,7 +176,6 @@ export default function Weather(){
                         </Accordion>
                     </Grid>
                  :  <></> }
-
                 { //next 7days weather 
                  Object.keys(hourlyWeather).length > 0 ?
                     <Grid item xs={9}>
@@ -222,10 +235,7 @@ export default function Weather(){
                             </AccordionDetails>
                         </Accordion>
                     </Grid>
-                 :  <></>
-                
-                
-                }
+                 :  <></> }
              </>
             :   <></> }
         </Grid>

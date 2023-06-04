@@ -1,17 +1,20 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import axios from "axios"
-import { Accordion, AccordionDetails, AccordionSummary, Button, Card, CardContent, Dialog, DialogContent, DialogTitle, FormControl, Grid, IconButton, InputLabel, OutlinedInput, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography, Zoom } from "@mui/material"
+import { Accordion, AccordionDetails, AccordionSummary, Button, Card, CardContent, CircularProgress, Dialog, DialogContent, DialogTitle, FormControl, Grid, IconButton, InputLabel, OutlinedInput, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography, Zoom } from "@mui/material"
 import { convertDateFormat, convertHourlyTime, getDailyInfo, getNext7DaysInfo } from "../utils/weatherUtils";
 import SearchIcon from '@mui/icons-material/Search';
 import ExpandMoreRounded from '@mui/icons-material/ExpandMoreRounded';
 import CloseIcon from '@mui/icons-material/Close'
-import { PulseIcon } from '@primer/octicons-react';
+import { PulseIcon, SunIcon } from '@primer/octicons-react';
+import { Link } from "react-router-dom";
 
 //api Key to retrieve photo of selected city
 const photoKey = "36153502-ff5ba4e1922e4ae564dfa46bd";
 
 export default function Temperature(){
-    const[selectedCity, setSelectedCity] = useState('')
+    const [isSearched, setIsSearched] = useState(false);
+
+    const[selectedCity, setSelectedCity] = useState('');
     const[coordinates, setCoordinates] = useState({});
     const[cityPhoto, setCityPhoto] = useState({});
     const[temperatureInfo, setTemperatureInfo] = useState({});
@@ -23,31 +26,43 @@ export default function Temperature(){
         setSelectedCity(event.target.value)
     }
 
+    useEffect(() => {
+    //to get selected city's photo
+        if(Object.keys(coordinates).length!==0){
+            let cityInfo = (coordinates.display_name).split(",")
+            let cityName = cityInfo[0].trim()
+            axios.get("https://pixabay.com/api/?key="+photoKey+"&q="+cityName)
+            .then((response)=> {
+                if(response.data.hits.length > 0){
+                    setCityPhoto(response.data.hits[0]);   
+                } 
+            })
+            .catch(() => console.error("Req city photo failed"))
+        }
+    }, [coordinates])
+    
+
     function searchCity() {
+        setIsSearched(true)
     //to get coordinates of input city
         axios.get('https://nominatim.openstreetmap.org/search?q='+selectedCity+'&format=json')
             .then((response) => {
                 if(response.data.length > 0){
                     setCoordinates(response.data[0]);
+                } else{
+                    console.warn("Insert a valid location")
                 }
-            //to get selected city's photo
-                axios.get("https://pixabay.com/api/?key="+photoKey+"&q="+selectedCity)
-                    .then((response)=> {
-                        if(response.data.hits.length > 0){
-                            setCityPhoto(response.data.hits[0]);   
-                        } 
-                    })
-                    .catch(() => console.error("Req city photo failed"))
             //to get temperatures info
                 axios.get("https://api.open-meteo.com/v1/forecast?latitude="+response.data[0].lat+"&longitude="+
-                          response.data[0].lon+"&hourly=temperature_2m,apparent_temperature&models=best_match&daily=temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min&current_weather=true&timezone=Europe%2FBerlin")
+                        response.data[0].lon+"&hourly=temperature_2m,apparent_temperature&models=best_match&daily=temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min&current_weather=true&timezone=Europe%2FBerlin")
                     .then((response) => {
                         console.log(response.data);
                         setTemperatureInfo(response.data);
+                        setIsSearched(false)
                     })
-                    .catch(() => console.error("Req temperatures info failed"))    
+                    .catch(() => console.error("Req temperatures info failed")) 
                 })
-        .catch(() => console.error("Req city info failed"))
+            .catch(() => console.error("Req city info failed"))
     }
 
     console.log("coordinates: ", coordinates);
@@ -86,7 +101,18 @@ export default function Temperature(){
                         </FormControl>
                     </CardContent>
                 </Card> 
-            </Grid>
+            </Grid> 
+            <Dialog open={isSearched}>
+                <DialogContent>
+                    <CircularProgress/>
+                </DialogContent>
+            </Dialog>
+            { !isSearched ?
+                <Grid item xs={10} marginX={'33.33%'} marginY={'-7%'}>
+                    <Typography>{coordinates.display_name}</Typography>
+                </Grid>
+              : <></>
+            }
             { Object.keys(temperatureInfo).length !== 0 ?
                 <> 
                     <Grid item xs={4} marginX={'33.33%'}>    
@@ -292,8 +318,21 @@ export default function Temperature(){
                             </Dialog>
                           : <></> }    
                     </> : <></> }
-                </>
-             :   <></> }
+                    <Grid item xs={3}>
+                        <Tooltip title="Show solar info" TransitionComponent={Zoom}>
+                            <Link
+                                to='/additional_info'
+                                state={{ coordinates: coordinates }}
+                            >
+                                <Button
+                                    variant="contained"
+                                >
+                                    <SunIcon size={30} />
+                                </Button>
+                            </Link>
+                        </Tooltip>
+                    </Grid>
+                </> : <></> }
         </Grid>
     )
 }

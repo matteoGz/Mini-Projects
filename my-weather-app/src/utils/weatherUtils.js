@@ -9,7 +9,7 @@ export function convertDateFormat(inputDate){
 export function convertHourlyTime(inputFullDate) {
     let hourlyTime = inputFullDate.slice(11, 16)
     return hourlyTime;
-} 
+}
 
 export function getDailyInfo(inputInfo){
     let dailyInfo = inputInfo.slice(0, 24)
@@ -19,4 +19,17 @@ export function getDailyInfo(inputInfo){
 export function getNext7DaysInfo(inputInfo){
     let next7DaysInfo = inputInfo.slice(24, inputInfo.length)
     return next7DaysInfo;
+}
+
+export function degreesToDirection(inputDegrees){
+    const directions = [ "N", "NE", "E", "SE", "S", "SW", "W", "NW", "N"];
+    
+    inputDegrees = inputDegrees % 360;
+    if(inputDegrees < 0){
+        inputDegrees += 360;
+    }
+
+    const indexOfDirections = Math.floor(inputDegrees/45);
+    
+    return  directions[indexOfDirections];
 }

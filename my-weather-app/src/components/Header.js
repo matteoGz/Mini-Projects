@@ -16,7 +16,7 @@ import HomeIcon from '@mui/icons-material/Home';
 const pages = [
   {title:'Weather', link:'/weather'},
   {title:'Temperatures', link:'/temperatures'},
-  {title:'Additional Info', link:'/additional_info'}
+  {title:'Other info', link:'/additional_info'},
 ];
 
 function Header() {
@@ -30,6 +30,8 @@ function Header() {
     setAnchorElNav(null);
   };
   
+  const [coordinates, setCoordinates] = React.useState(null);
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -74,7 +76,7 @@ function Header() {
             >
               {pages.map((page, index) => (
                 <MenuItem key={index} onClick={handleCloseNavMenu}>
-                  <Link to={page.link} style={{ color:"inherit", textDecoration: 'none' }}>
+                  <Link key={page.title} to={page.link} state={{ coordinates: coordinates }} style={{ color:"inherit", textDecoration: 'none' }}>
                     <Typography textAlign="center">{page.title}</Typography>
                   </Link>
                 </MenuItem>
@@ -102,7 +104,7 @@ function Header() {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
-              <Link key={page.title} to={page.link} style={{ textDecoration: 'none' }}>
+              <Link key={page.title} to={page.link} state={{ coordinates: coordinates }} style={{ textDecoration: 'none' }}>
                   <Button
                     onClick={handleCloseNavMenu}
                     sx={{ my: 2, color: 'white', display: 'block', borderRadius: 10 }}
