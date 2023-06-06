@@ -11,7 +11,7 @@ export default function AdditionalInfo(props){
     setTimeout(() => setLoading(false), 2000)
 
     return(
-        <Grid container spacing={3}>
+        <Grid container spacing={3} justifyContent='center' alignItems='center'>
             { (coordinates === null || coordinates === undefined) ?
                 <>
                     null
@@ -19,13 +19,18 @@ export default function AdditionalInfo(props){
              :  <> 
                 { !loading ?
                     <>  
-                        <Grid item xs={12}>
+                        <Grid item xs='auto'>
                             <Typography variant="h6">{coordinates.display_name}</Typography>
                         </Grid>
                         <SolarInfo coordinates={coordinates}/>
                         <WindInfo coordinates={coordinates}/>
                     </>
-                 :  <CircularProgress />
+                 :  <Grid item xs='auto'>
+                        <CircularProgress
+                            color="primary"
+                            thickness={5}
+                            />
+                    </Grid>
                 }  
                 </>
             }
