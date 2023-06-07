@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { Accordion, AccordionDetails, AccordionSummary, Card, CardContent, CardHeader, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
-import { uvIndex } from "../models/uvIndex";
 import { convertHourlyTime, getDailyInfo, getNext7DaysInfo } from "../utils/weatherUtils";
 import ExpandMoreRounded from '@mui/icons-material/ExpandMoreRounded';
+import { uvIndex } from "../models/uvIndex";
 
 export default function SolarInfo(props){
     const coordinates = props.coordinates;
