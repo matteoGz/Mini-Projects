@@ -56,7 +56,7 @@ export default function SolarInfo(props){
                                         <TableRow>
                                             <TableCell>UV Index</TableCell>
                                             { getDailyInfo(hourlySolar.uv_index).map((uvInd, index) =>
-                                                <TableCell key={index} color={getUvIndexColor(uvInd)}>
+                                                <TableCell key={index} sx={{ backgroundColor: getUvIndexColor(uvInd) }}>
                                                     {uvInd}
                                                 </TableCell>
                                                 )
@@ -80,7 +80,7 @@ export default function SolarInfo(props){
                                             <TableCell>
                                                 {convertHourlyTime(dailySolar.sunset[0])}
                                             </TableCell>
-                                            <TableCell color={getUvIndexColor(dailySolar.uv_index_max[0])}>
+                                            <TableCell sx={{ backgroundColor: getUvIndexColor(dailySolar.uv_index_max[0]) }}>
                                                 {dailySolar.uv_index_max[0]}
                                             </TableCell>
                                         </TableRow>
@@ -115,7 +115,7 @@ export default function SolarInfo(props){
                                         <TableRow>
                                             <TableCell>UV Index</TableCell>
                                             { getNext7DaysInfo(hourlySolar.uv_index).map((uvInd, index) =>
-                                                <TableCell key={index} color={getUvIndexColor(uvInd)}>
+                                                <TableCell key={index} sx={{ backgroundColor: getUvIndexColor(uvInd) }}>
                                                     {uvInd}
                                                 </TableCell>
                                                 )
@@ -126,7 +126,7 @@ export default function SolarInfo(props){
                             </TableContainer>
                         </AccordionDetails>
                     </Accordion></>
-                  : <>Impossible to retrive information: Try to reload.</> }
+                  : <>Impossible to retrive information</> }
                 </CardContent>
             </Card>
         </Grid>

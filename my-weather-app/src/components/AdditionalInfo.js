@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { CircularProgress, Grid, Typography } from "@mui/material";
 import SolarInfo from "./SolarInfo";
 import WindInfo from "./WindInfo";
-import { useState } from "react";
+import SeaInfo from "./SeaInfo";
+import AirInfo from "./AirInfo";
 
 export default function AdditionalInfo(props){
     let coordinates = props.coordinates;
@@ -14,7 +16,7 @@ export default function AdditionalInfo(props){
         <Grid container spacing={3} justifyContent='center' alignItems='center'>
             { (coordinates === null || coordinates === undefined) ?
                 <>
-                    null
+                    no coordinates set
                 </>
              :  <> 
                 { !loading ?
@@ -22,8 +24,10 @@ export default function AdditionalInfo(props){
                         <Grid item xs='auto'>
                             <Typography variant="h6">{coordinates.display_name}</Typography>
                         </Grid>
-                        <SolarInfo coordinates={coordinates}/>
-                        <WindInfo coordinates={coordinates}/>
+                        <SolarInfo coordinates={coordinates} />
+                        <WindInfo coordinates={coordinates} />
+                        <AirInfo coordinates={coordinates} />
+                        <SeaInfo coordinates={coordinates} />
                     </>
                  :  <Grid item xs='auto'>
                         <CircularProgress
