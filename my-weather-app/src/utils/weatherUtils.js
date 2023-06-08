@@ -1,3 +1,5 @@
+import { uvIndex } from "../models/uvIndex";
+
 export function convertDateFormat(inputDate){
     let day = inputDate.slice(8, 11)
     let month = inputDate.slice(4, 8)
@@ -32,4 +34,18 @@ export function degreesToDirection(inputDegrees){
     const indexOfDirections = Math.floor(inputDegrees/45);
     
     return  directions[indexOfDirections];
+}
+
+export function getUvIndexColor(uvIndexValue){
+    let checkColor = 
+          uvIndex.lowUv.minValue <= uvIndexValue <= uvIndex.lowUv.maxValue ? uvIndex.lowUv.color
+        : uvIndex.moderateUv.minValue <= uvIndexValue <= uvIndex.moderateUv.maxValue ? uvIndex.moderateUv.color
+        : uvIndex.highUv.minValue <= uvIndexValue <= uvIndex.highUv.maxValue ? uvIndex.highUv.color
+        : uvIndex.veryHighUv.minValue <= uvIndexValue <= uvIndex.veryHighUv.maxValue ? uvIndex.veryHighUv.color
+        : uvIndex.extremeUv.minValue <= uvIndexValue <= uvIndex.extremeUv.maxValue ? uvIndex.extremeUv.color
+        : "black"
+
+    console.log("color for uvIndexVal-"+uvIndexValue+"-is: "+checkColor)
+
+    return checkColor;
 }

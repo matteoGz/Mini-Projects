@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { Accordion, AccordionDetails, AccordionSummary, Card, CardContent, CardHeader, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
-import { convertHourlyTime, getDailyInfo, getNext7DaysInfo } from "../utils/weatherUtils";
+import { convertHourlyTime, getDailyInfo, getNext7DaysInfo, getUvIndexColor } from "../utils/weatherUtils";
 import ExpandMoreRounded from '@mui/icons-material/ExpandMoreRounded';
-import { uvIndex } from "../models/uvIndex";
 
 export default function SolarInfo(props){
     const coordinates = props.coordinates;
@@ -57,7 +56,7 @@ export default function SolarInfo(props){
                                         <TableRow>
                                             <TableCell>UV Index</TableCell>
                                             { getDailyInfo(hourlySolar.uv_index).map((uvInd, index) =>
-                                                <TableCell key={index}>
+                                                <TableCell key={index} color={getUvIndexColor(uvInd)}>
                                                     {uvInd}
                                                 </TableCell>
                                                 )
@@ -75,9 +74,15 @@ export default function SolarInfo(props){
                                     </TableHead>
                                     <TableBody>
                                         <TableRow>
-                                            <TableCell>{convertHourlyTime(dailySolar.sunrise[0])}</TableCell>
-                                            <TableCell>{convertHourlyTime(dailySolar.sunset[0])}</TableCell>
-                                            <TableCell>{dailySolar.uv_index_max[0]}</TableCell>
+                                            <TableCell>
+                                                {convertHourlyTime(dailySolar.sunrise[0])}
+                                            </TableCell>
+                                            <TableCell>
+                                                {convertHourlyTime(dailySolar.sunset[0])}
+                                            </TableCell>
+                                            <TableCell color={getUvIndexColor(dailySolar.uv_index_max[0])}>
+                                                {dailySolar.uv_index_max[0]}
+                                            </TableCell>
                                         </TableRow>
                                     </TableBody>
                                 </Table>
@@ -110,7 +115,7 @@ export default function SolarInfo(props){
                                         <TableRow>
                                             <TableCell>UV Index</TableCell>
                                             { getNext7DaysInfo(hourlySolar.uv_index).map((uvInd, index) =>
-                                                <TableCell key={index}>
+                                                <TableCell key={index} color={getUvIndexColor(uvInd)}>
                                                     {uvInd}
                                                 </TableCell>
                                                 )
