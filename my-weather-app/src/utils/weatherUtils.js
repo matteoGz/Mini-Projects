@@ -25,14 +25,13 @@ export function getNext7DaysInfo(inputInfo){
 
 export function degreesToDirection(inputDegrees){
     const directions = [ "N", "NE", "E", "SE", "S", "SW", "W", "NW", "N"];
-    
+    console.log("input "+inputDegrees+"°");
     inputDegrees = inputDegrees % 360;
     if(inputDegrees < 0){
         inputDegrees += 360;
     }
-
     const indexOfDirections = Math.floor(inputDegrees/45);
-    
+    console.log("index calculated: "+indexOfDirections);
     return  directions[indexOfDirections];
 }
 
@@ -44,8 +43,6 @@ export function getUvIndexColor(uvIndexValue){
         : uvIndex.veryHighUv.minValue <= uvIndexValue <= uvIndex.veryHighUv.maxValue ? uvIndex.veryHighUv.color
         : uvIndex.extremeUv.minValue <= uvIndexValue <= uvIndex.extremeUv.maxValue ? uvIndex.extremeUv.color
         : "black"
-
     console.log("color for uvIndexVal-"+uvIndexValue+"-is: "+checkColor)
-
     return checkColor;
 }
