@@ -9,8 +9,8 @@ export default function SeaInfo(props){
 
     useEffect(() => {
         console.log("SeaInfo mounted and coordinates been passed :", coordinates)
-        axios.get(/*insert correct link...from open-meteo*/"?latitude="+coordinates.lat+
-                    "&longitude="+coordinates.lon+"&timezone=auto")
+        axios.get("https://marine-api.open-meteo.com/v1/marine?latitude="+coordinates.lat+
+                    "&longitude="+coordinates.lon+"&hourly=wave_height,wave_direction,wave_period&daily=wave_height_max,wave_direction_dominant,wave_period_max&length_unit=metric&timezone=auto")
             .then((response) => {
                 console.log("resp sea info :", response.data)
                 setSeaInfo(response.data)
