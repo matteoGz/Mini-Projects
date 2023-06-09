@@ -13,7 +13,7 @@ export default function AdditionalInfo(props){
     setTimeout(() => setLoading(false), 2000)
 
     return(
-        <Grid container spacing={3} justifyContent='center' alignItems='center'>
+        <Grid container spacing={3}>
             { (coordinates === null || coordinates === undefined) ?
                 <>
                     no coordinates set
@@ -29,7 +29,7 @@ export default function AdditionalInfo(props){
                         <AirInfo coordinates={coordinates} />
                         <SeaInfo coordinates={coordinates} />
                     </>
-                 :  <Grid item xs='auto'>
+                 :  <Grid item xs='auto' justifyContent='center' alignItems='center'>
                         <CircularProgress
                             color="primary"
                             thickness={5}

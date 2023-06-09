@@ -9,8 +9,8 @@ export default function AirInfo(props){
 
     useEffect(() => {
         console.log("AirInfo mounted and coordinates been passed :", coordinates)
-        axios.get("https://api.open-meteo.com/v1/forecast?latitude="+coordinates.lat+
-                    "&longitude="+coordinates.lon+"&hourly=uv_index&models=best_match&daily=sunrise,sunset,uv_index_max&timezone=auto")
+        axios.get(/*insert correct link...from open-meteo*/"?latitude="+coordinates.lat+
+                    "&longitude="+coordinates.lon+"&timezone=auto")
             .then((response) => {
                 console.log("resp air info :", response.data)
                 setAirInfo(response.data)
@@ -24,7 +24,7 @@ export default function AirInfo(props){
                 <CardHeader title="Air quality card" />
                 <CardContent>
                 { Object.keys(airInfo).length !== 0 ?
-                    <>Retrieved</>
+                    <>Retrieved...to complete with some info...</>
                  :  <>Impossible to retrive information</>    
                 }
                 </CardContent>

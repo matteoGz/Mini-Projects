@@ -9,8 +9,8 @@ export default function SeaInfo(props){
 
     useEffect(() => {
         console.log("SeaInfo mounted and coordinates been passed :", coordinates)
-        axios.get("https://api.open-meteo.com/v1/forecast?latitude="+coordinates.lat+
-                    "&longitude="+coordinates.lon+"&hourly=uv_index&models=best_match&daily=sunrise,sunset,uv_index_max&timezone=auto")
+        axios.get(/*insert correct link...from open-meteo*/"?latitude="+coordinates.lat+
+                    "&longitude="+coordinates.lon+"&timezone=auto")
             .then((response) => {
                 console.log("resp sea info :", response.data)
                 setSeaInfo(response.data)
@@ -24,7 +24,7 @@ export default function SeaInfo(props){
                 <CardHeader title="Sea card" />
                 <CardContent>
                 { Object.keys(seaInfo).length !== 0 ?
-                    <>Retrieved</>
+                    <>Retrieved...to complete with some info...</>
                  :  <>Impossible to retrive information</>    
                 }
                 </CardContent>
