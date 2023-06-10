@@ -20,7 +20,7 @@ export default function SolarInfo(props){
             .catch(() => console.error("Req solar info failed"))
     }, [coordinates])
 
-    console.log("setted solar info: ",solarInfo);
+    console.log("set solar info: ",solarInfo);
     let hourlySolar = solarInfo.hourly;
     let dailySolar = solarInfo.daily;
 
