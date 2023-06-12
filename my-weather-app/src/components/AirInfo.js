@@ -23,8 +23,9 @@ export default function AirInfo(props){
     let hourlyAir = airInfo.hourly;
     let units = airInfo.hourly_units;
 
-    console.log("length of pollen info: "+((airInfo.hourly.alder_pollen).length)/24) //days of shown pollen info (5)
-    
+    console.log("length of pollen info: "+((airInfo.hourly.alder_pollen).length)/24); //days of shown pollen info (5)
+    console.log("length of euAQI: "+((airInfo.hourly.european_aqi).length)/24)
+
     return (
         <Grid item xs={6}>
             <Card>
@@ -305,7 +306,7 @@ export default function AirInfo(props){
                                             <TableCell>Alder pollen</TableCell>
                                             { getNext7DaysInfo(hourlyAir.alder_pollen).map((alderPollen, index) =>
                                                 <TableCell key={index}>
-                                                    { alderPollen }&nbsp;{ units.alder_pollen }
+                                                    { alderPollen !== null ? alderPollen+" "+units.alder_pollen : "-" }
                                                 </TableCell>
                                                 )
                                             }
@@ -314,7 +315,7 @@ export default function AirInfo(props){
                                             <TableCell>Birch pollen</TableCell>
                                             { getNext7DaysInfo(hourlyAir.birch_pollen).map((birchPollen, index) =>
                                                 <TableCell key={index}>
-                                                    { birchPollen }&nbsp;{ units.birch_pollen }
+                                                    { birchPollen !== null ? birchPollen+" "+units.birch_pollen : "-" }
                                                 </TableCell>
                                                 )
                                             }
@@ -323,7 +324,7 @@ export default function AirInfo(props){
                                             <TableCell>Grass pollen</TableCell>
                                             { getNext7DaysInfo(hourlyAir.grass_pollen).map((grassPollen, index) =>
                                                 <TableCell key={index}>
-                                                    { grassPollen }&nbsp;{ units.grass_pollen }
+                                                    { grassPollen !== null ? grassPollen+" "+units.grass_pollen : "-" }
                                                 </TableCell>
                                                 )
                                             }
@@ -332,7 +333,7 @@ export default function AirInfo(props){
                                             <TableCell>Mugwort pollen</TableCell>
                                             { getNext7DaysInfo(hourlyAir.mugwort_pollen).map((mugwortPollen, index) =>
                                                 <TableCell key={index}>
-                                                    { mugwortPollen }&nbsp;{ units.mugwort_pollen }
+                                                    { mugwortPollen !== null ? mugwortPollen+" "+units.mugwort_pollen : "-" }
                                                 </TableCell>
                                                 )
                                             }
@@ -341,7 +342,7 @@ export default function AirInfo(props){
                                             <TableCell>Olive pollen</TableCell>
                                             { getNext7DaysInfo(hourlyAir.olive_pollen).map((olivePollen, index) =>
                                                 <TableCell key={index}>
-                                                    { olivePollen }&nbsp;{ units.olive_pollen }
+                                                    { olivePollen !== null ? olivePollen+" "+units.olive_pollen : "-" }
                                                 </TableCell>
                                                 )
                                             }
@@ -350,15 +351,11 @@ export default function AirInfo(props){
                                             <TableCell>Ragweed pollen</TableCell>
                                             { getNext7DaysInfo(hourlyAir.ragweed_pollen).map((ragweedPollen, index) =>
                                                 <TableCell key={index}>
-                                                    { ragweedPollen }&nbsp;{ units.ragweed_pollen }
+                                                    { ragweedPollen !== null ? ragweedPollen+" "+units.ragweed_pollen : "-" }
                                                 </TableCell>
                                                 )
                                             }
                                         </TableRow>
-                                    </TableBody>
-                                </Table>
-                                <Table>
-                                    <TableHead>
                                         <TableRow>
                                             <TableCell><strong>European AQI</strong></TableCell>
                                             { getNext7DaysInfo(hourlyAir.european_aqi).map((euAQI, index) =>
@@ -368,9 +365,7 @@ export default function AirInfo(props){
                                                 )
                                             }
                                         </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                    <TableRow>
+                                        <TableRow>
                                             <TableCell>European AQI - PM 2.5</TableCell>
                                             { getNext7DaysInfo(hourlyAir.european_aqi_pm2_5).map((euAQI, index) =>
                                                 <TableCell key={index}>
