@@ -11,13 +11,23 @@ function App() {
     longitude: undefined
   }
   //get gps location
-  navigator.geolocation.getCurrentPosition(function(position) {
-    console.log("Latitude is :", position.coords.latitude);
-    console.log("Longitude is :", position.coords.longitude);
-    gpsPosition.latitude = position.coords.latitude
-    gpsPosition.longitude = position.coords.longitude
-  });
-  //if user block access to position => ask city to retrieve coordinates
+  if("geolocation" in navigator){
+    console.log("Available gpsDetection");
+    navigator.geolocation.getCurrentPosition(
+      function(position) {
+        console.log("Latitude is :", position.coords.latitude);
+        console.log("Longitude is :", position.coords.longitude);
+        gpsPosition.latitude = position.coords.latitude
+        gpsPosition.longitude = position.coords.longitude
+      },
+      function(error) {
+        console.error("Error Code = " + error.code + " - " + error.message);
+        //if user block access to position => ask city to retrieve coordinates
+      }
+    );
+  } else {
+    console.log("Not Available gpsDetection");
+  }
 
   return (
     <BrowserRouter>
