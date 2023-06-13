@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CircularProgress, Grid, Typography } from "@mui/material";
+import { CircularProgress, Grid, Tooltip, Typography } from "@mui/material";
 import SolarInfo from "./SolarInfo";
 import WindInfo from "./WindInfo";
 import SeaInfo from "./SeaInfo";
@@ -10,7 +10,7 @@ export default function AdditionalInfo(props){
     console.log("addinfo prop: ", coordinates)
 
     const [loading, setLoading] = useState(true)
-    setTimeout(() => setLoading(false), 3000)
+    setTimeout(() => setLoading(false), 2000)
 
     return(
         <Grid container spacing={3}>
@@ -21,7 +21,7 @@ export default function AdditionalInfo(props){
              :  <> 
                 { !loading ?
                     <>  
-                        <Grid item xs='auto'>
+                        <Grid item xs={12}>
                             <Typography variant="h6">{coordinates.display_name}</Typography>
                         </Grid>
                         <SolarInfo coordinates={coordinates} />
@@ -29,11 +29,13 @@ export default function AdditionalInfo(props){
                         <AirInfo coordinates={coordinates} />
                         <SeaInfo coordinates={coordinates} />
                     </>
-                 :  <Grid item xs='auto' justifyContent='center' alignItems='center'>
-                        <CircularProgress
-                            color="primary"
-                            thickness={5}
+                 :  <Grid item xs={12}>
+                        <Tooltip title="Loading information, wait please...">
+                            <CircularProgress
+                                color="primary"
+                                thickness={5}
                             />
+                        </Tooltip>
                     </Grid>
                 }  
                 </>

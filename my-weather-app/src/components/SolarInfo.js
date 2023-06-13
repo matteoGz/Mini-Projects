@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
-import { Accordion, AccordionDetails, AccordionSummary, Card, CardContent, CardHeader, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
+import { Accordion, AccordionDetails, AccordionSummary, Card, CardContent, CardHeader, CircularProgress, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from "@mui/material"
 import { convertHourlyTime, getDailyInfo, getNext7DaysInfo, getUvIndexColor } from "../utils/weatherUtils";
 import ExpandMoreRounded from '@mui/icons-material/ExpandMoreRounded';
 
@@ -126,7 +126,13 @@ export default function SolarInfo(props){
                             </TableContainer>
                         </AccordionDetails>
                     </Accordion></>
-                  : <>Impossible to retrive information</> }
+                  : <Tooltip title="Loading information, wait please...">
+                        <CircularProgress
+                            color="primary"
+                            thickness={5}
+                        />
+                    </Tooltip>
+                }
                 </CardContent>
             </Card>
         </Grid>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
-import { Accordion, AccordionDetails, AccordionSummary, Card, CardContent, CardHeader, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Card, CardContent, CardHeader, CircularProgress, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
 import ExpandMoreRounded from '@mui/icons-material/ExpandMoreRounded';
 import { convertHourlyTime, getDailyInfo, getNext7DaysInfo } from "../utils/weatherUtils";
 
@@ -23,8 +23,8 @@ export default function AirInfo(props){
     let hourlyAir = airInfo.hourly;
     let units = airInfo.hourly_units;
 
-    console.log("length of pollen info: "+((airInfo.hourly.alder_pollen).length)/24); //days of shown pollen info (5)
-    console.log("length of euAQI: "+((airInfo.hourly.european_aqi).length)/24)
+    //console.log("length of pollen info: "+((airInfo.hourly.alder_pollen).length)/24); //days of shown pollen info (5)
+    //console.log("length of euAQI: "+((airInfo.hourly.european_aqi).length)/24)
 
     return (
         <Grid item xs={6}>
@@ -415,7 +415,12 @@ export default function AirInfo(props){
                             </TableContainer>
                         </AccordionDetails>
                     </Accordion></>
-                 :  <>Impossible to retrive information</>    
+                 :  <Tooltip title="Loading information, wait please...">
+                        <CircularProgress
+                            color="primary"
+                            thickness={5}
+                        />
+                    </Tooltip>   
                 }
                 </CardContent>
             </Card>
