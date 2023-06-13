@@ -28,6 +28,7 @@ export default function Weather(){
             .then((response) => {
                 if(response.data.length > 0){
                     setCoordinates(response.data[0]);
+                    localStorage.setItem('coordinates', JSON.stringify(response.data[0]));
                 }
             //to get selected city's photo
                 axios.get("https://pixabay.com/api/?key="+photoKey+"&q="+selectedCity)

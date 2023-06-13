@@ -32,6 +32,12 @@ function Header() {
   
   const [coordinates, setCoordinates] = React.useState(null);
 
+  React.useEffect(() => {
+    let coordinatesFromLocalStorage = localStorage.getItem('coordinates');
+    setCoordinates(JSON.parse(coordinatesFromLocalStorage));
+  }, [localStorage.getItem('coordinates')])
+  
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -103,8 +109,8 @@ function Header() {
             My Weather App
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Link key={page.title} to={page.link} state={{ coordinates: coordinates }} style={{ textDecoration: 'none' }}>
+            {pages.map((page) => ( 
+              <Link key={page.title} to={page.link} state={{ coordinates: coordinates }} style={{ textDecoration: 'none' }}>{console.log(coordinates)}
                   <Button
                     onClick={handleCloseNavMenu}
                     sx={{ my: 2, color: 'white', display: 'block', borderRadius: 10 }}

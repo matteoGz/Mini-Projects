@@ -49,6 +49,7 @@ export default function Temperature(){
             .then((response) => {
                 if(response.data.length > 0){
                     setCoordinates(response.data[0]);
+                    localStorage.setItem('coordinates', JSON.stringify(response.data[0]));
                 } else{
                     console.warn("Insert a valid location")
                 }
