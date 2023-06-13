@@ -10,7 +10,7 @@ export default function AdditionalInfo(props){
     console.log("addinfo prop: ", coordinates)
 
     const [loading, setLoading] = useState(true)
-    setTimeout(() => setLoading(false), 2000)
+    setTimeout(() => setLoading(false), 2500)
 
     return(
         <Grid container spacing={3}>
