@@ -32,7 +32,7 @@ export default function AirInfo(props){
                 <CardHeader title="Air quality card" />
                 <CardContent>
                 { Object.keys(airInfo).length !== 0 ? <>
-                    <Accordion>
+                    <Accordion elevation={5}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreRounded />}
                             aria-controls="hourlyAir-content"
@@ -229,7 +229,11 @@ export default function AirInfo(props){
                         </AccordionDetails>
                     </Accordion>
                     <Accordion elevation={5}>
-                        <AccordionSummary>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreRounded />}
+                            aria-controls="hourlyAir-content"
+                            id="hourlyAir-header"
+                            >
                             <Typography>Next 7 days</Typography>
                         </AccordionSummary>
                         <AccordionDetails>

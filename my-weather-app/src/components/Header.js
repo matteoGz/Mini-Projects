@@ -1,19 +1,9 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/MenuOutlined';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem';
-import NightsStayIcon from '@mui/icons-material/NightsStay';
-import HomeIcon from '@mui/icons-material/Home';
-import { Avatar, Chip } from '@mui/material';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { AppBar, Avatar, Box, Button, Chip, Container, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material';
+import MenuIcon from '@mui/icons-material/MenuOutlined';
+import NightsStayIcon from '@mui/icons-material/NightsStay';
 import { photoKey } from '../api/apiKey';
 
 const pages = [
@@ -141,18 +131,15 @@ function Header() {
           { Object.keys(coordinates).length !== 0 ?
               <Box>
                 <Chip
+                  color='primary'
                   variant='outlined'
                   label={coordinates.display_name}
                   avatar={<Avatar alt={coordinates.display_name} src={avatarPhoto.previewURL} />}
+                  sx={{ backgroundColor: "#fff" }}
                 />
               </Box>
             : <></>
           }
-          <Box>
-            <Link to='/' style={{ color:'inherit' }}>
-              <HomeIcon/>
-            </Link>
-          </Box>
         </Toolbar>
       </Container>
     </AppBar>
