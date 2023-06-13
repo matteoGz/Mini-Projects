@@ -12,6 +12,9 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import NightsStayIcon from '@mui/icons-material/NightsStay';
 import HomeIcon from '@mui/icons-material/Home';
+import { Avatar, Chip } from '@mui/material';
+import axios from 'axios';
+import { photoKey } from '../api/apiKey';
 
 const pages = [
   {title:'Weather', link:'/weather'},
@@ -30,14 +33,29 @@ function Header() {
     setAnchorElNav(null);
   };
   
-  const [coordinates, setCoordinates] = React.useState(null);
+  const [coordinates, setCoordinates] = React.useState({});
+  const [avatarPhoto, setAvatarPhoto] = React.useState({});
 
   React.useEffect(() => {
-    let coordinatesFromLocalStorage = localStorage.getItem('coordinates');
-    setCoordinates(JSON.parse(coordinatesFromLocalStorage));
-  }, [localStorage.getItem('coordinates')])
-  
+    let coordinatesFromLocalStorage = JSON.parse(localStorage.getItem('coordinates'));
+    let cityByCoordinates = coordinatesFromLocalStorage.display_name.split(",");
+    setCoordinates(coordinatesFromLocalStorage);
+    axios.get("https://pixabay.com/api/?key="+photoKey+"&q="+cityByCoordinates[0])
+      .then((response)=> {
+        if(response.data.hits.length > 0){
+          setAvatarPhoto(response.data.hits[0]);
+          console.log("photo info ", response.data.hits[0])   
+        } 
+      })
+      .catch(() => console.error("Req city photo failed"))
 
+  }, [localStorage.getItem('coordinates')])
+
+  //json to set in localStorage:
+  /*
+  {"place_id":307634198,"licence":"Data © OpenStreetMap contributors, ODbL 1.0. https://osm.org/copyright","osm_type":"relation","osm_id":44875,"boundingbox":["44.3784709","44.5198419","8.6657444","9.0955805"],"lat":"44.40726","lon":"8.9338624","display_name":"Genova, Genoa, Liguria, Italia","class":"boundary","type":"administrative","importance":0.7921779665930816,"icon":"https://nominatim.openstreetmap.org/ui/mapicons/poi_boundary_administrative.p.20.png"}
+  */
+ 
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -110,7 +128,7 @@ function Header() {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => ( 
-              <Link key={page.title} to={page.link} state={{ coordinates: coordinates }} style={{ textDecoration: 'none' }}>{console.log(coordinates)}
+              <Link key={page.title} to={page.link} state={{ coordinates: coordinates }} style={{ textDecoration: 'none' }}>
                   <Button
                     onClick={handleCloseNavMenu}
                     sx={{ my: 2, color: 'white', display: 'block', borderRadius: 10 }}
@@ -120,6 +138,16 @@ function Header() {
               </Link>
             ))}
           </Box>
+          { Object.keys(coordinates).length !== 0 ?
+              <Box>
+                <Chip
+                  variant='outlined'
+                  label={coordinates.display_name}
+                  avatar={<Avatar alt={coordinates.display_name} src={avatarPhoto.previewURL} />}
+                />
+              </Box>
+            : <></>
+          }
           <Box>
             <Link to='/' style={{ color:'inherit' }}>
               <HomeIcon/>

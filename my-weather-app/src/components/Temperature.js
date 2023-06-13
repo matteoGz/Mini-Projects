@@ -7,9 +7,7 @@ import ExpandMoreRounded from '@mui/icons-material/ExpandMoreRounded';
 import CloseIcon from '@mui/icons-material/Close'
 import { PulseIcon, SunIcon } from '@primer/octicons-react';
 import { Link } from "react-router-dom";
-
-//api Key to retrieve photo of selected city
-const photoKey = "36153502-ff5ba4e1922e4ae564dfa46bd";
+import { photoKey } from "../api/apiKey";
 
 export default function Temperature(){
     const [isSearched, setIsSearched] = useState(false);

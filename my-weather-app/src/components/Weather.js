@@ -5,9 +5,7 @@ import { weatherByWmoCode } from '../models/weatherByWmoCode';
 import { convertHourlyTime, getDailyInfo, getNext7DaysInfo } from '../utils/weatherUtils';
 import SearchIcon from '@mui/icons-material/Search';
 import ExpandMoreRounded from '@mui/icons-material/ExpandMoreRounded';
-
-//api Key to retrieve photo of selected city
-const photoKey = "36153502-ff5ba4e1922e4ae564dfa46bd";
+import { photoKey } from '../api/apiKey';
 
 export default function Weather(){
     const[isSearched, setIsSearched] = useState(false);
