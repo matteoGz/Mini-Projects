@@ -28,17 +28,19 @@ function Header() {
 
   React.useEffect(() => {
     let coordinatesFromLocalStorage = JSON.parse(localStorage.getItem('coordinates'));
-    let cityByCoordinates = coordinatesFromLocalStorage.display_name.split(",");
-    setCoordinates(coordinatesFromLocalStorage);
-    axios.get("https://pixabay.com/api/?key="+photoKey+"&q="+cityByCoordinates[0])
-      .then((response)=> {
-        if(response.data.hits.length > 0){
-          setAvatarPhoto(response.data.hits[0]);
-          console.log("photo info ", response.data.hits[0])   
-        } 
-      })
-      .catch(() => console.error("Req city photo failed"))
-
+    console.log("coordinates from localStorage ", coordinatesFromLocalStorage)
+    if(coordinatesFromLocalStorage !== null){
+      let cityByCoordinates = coordinatesFromLocalStorage.display_name.split(",");
+      setCoordinates(coordinatesFromLocalStorage);
+      axios.get("https://pixabay.com/api/?key="+photoKey+"&q="+cityByCoordinates[0])
+        .then((response)=> {
+          if(response.data.hits.length > 0){
+            setAvatarPhoto(response.data.hits[0]);
+            console.log("photo info ", response.data.hits[0])   
+          } 
+        })
+        .catch(() => console.error("Req city photo failed"))
+    }    
   }, [localStorage.getItem('coordinates')])
 
   //json to set in localStorage:
@@ -129,15 +131,17 @@ function Header() {
             ))}
           </Box>
           { Object.keys(coordinates).length !== 0 ?
-              <Box>
-                <Chip
-                  color='primary'
-                  variant='outlined'
-                  label={coordinates.display_name}
-                  avatar={<Avatar alt={coordinates.display_name} src={avatarPhoto.previewURL} />}
-                  sx={{ backgroundColor: "#fff" }}
-                />
-              </Box>
+              coordinates.display_name !== null || coordinates !== undefined ?  
+                <Box>
+                  <Chip
+                    color='primary'
+                    variant='outlined'
+                    label={coordinates.display_name}
+                    avatar={<Avatar alt={coordinates.display_name} src={avatarPhoto.previewURL} />}
+                    sx={{ backgroundColor: "#fff" }}
+                  />
+                </Box>
+              : <></>
             : <></>
           }
         </Toolbar>

@@ -5,11 +5,13 @@ import TemperaturePage from "./pages/TemperaturePage";
 import AdditionalInfoPage from "./pages/AdditionalInfoPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import { useEffect, useState } from "react";
-import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Modal, Typography } from "@mui/material";
+import { Box, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormHelperText, IconButton, Input, InputLabel, Modal, Typography } from "@mui/material";
+import { SearchIcon } from "@primer/octicons-react";
 
 function App() {
   const [ toSetPosition, setToSetPosition ] = useState(false);
-  const [ alertInsert, setAlertInsert ] = useState(false)
+  const [ alertInsert, setAlertInsert ] = useState(false);
+  const [ changedManualPosition, setChangedManualPosition ] = useState(null);
   const [ manualPosition, setManualPosition ] = useState(null);
 
   let gpsPosition = {
@@ -45,6 +47,7 @@ function App() {
   }, [toSetPosition])
   
   const insertPosition = () => {
+    console.log("insert position modal")
     return(
       <Modal
         open={toSetPosition}
@@ -53,8 +56,25 @@ function App() {
         aria-describedby="modal-insertPosition-description"
       >
         <Box>
-          <Typography id="modal-insertPosition-title">Text in a modal</Typography>
-          <Typography id="modal-insertPosition-description">Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</Typography>
+          <Typography id="modal-insertPosition-title">Gps detection inactive</Typography>
+          <Typography id="modal-insertPosition-description">Please insert a city</Typography>
+          <FormControl variant="outlined" required>
+            <InputLabel htmlFor="insertPosition">City</InputLabel>
+            <Input
+              id="insertPosition"
+              placeholder="Insert a city..."
+              aria-describedby="insertPosition-helperText"
+              onChange={(event) => setChangedManualPosition(event.target.value)}
+            />
+            <FormHelperText id="insertPosition-helperText">Helper text sample</FormHelperText>
+            <IconButton
+              size="large"
+              color="primary"
+              onClick={() => setManualPosition(changedManualPosition)}
+            >{console.log("searching for position..."+changedManualPosition)}
+              <SearchIcon />
+            </IconButton>
+          </FormControl>
           {/* to set manual position! */}
         </Box>
       </Modal> 
@@ -62,12 +82,12 @@ function App() {
   }
 
   useEffect(() => {
-    setToSetPosition(true)
     backToInsertPosition()
     //show alert dialog...and back to modal 'insert position'
   }, [alertInsert])
 
   const backToInsertPosition = () => {
+    console.log("alert backToInsert")
     return(
       <Dialog
         open={alertInsert}
@@ -83,7 +103,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Homepage position={gpsPosition !== undefined ? gpsPosition : manualPosition}/>}/>
+        <Route path="/" element={<Homepage position={(gpsPosition !== undefined) && !toSetPosition ? gpsPosition : manualPosition}/>}/>
         <Route path="/weather" element={<WeatherPage/>} />
         <Route path="/temperatures" element={<TemperaturePage/>} />
         <Route path="/additional_info" element={<AdditionalInfoPage/>} />
