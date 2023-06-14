@@ -38,6 +38,8 @@ const styles = StyleSheet.create({
     padding: 30,
     borderTopWidth: 1,
     borderTopColor: '#e0e0e0',
+    borderRadius: 100,
+    margin: 5,
     title: { fontSize: 18, fontWeight: 'bold', color: '#fff' }
   }
 });
