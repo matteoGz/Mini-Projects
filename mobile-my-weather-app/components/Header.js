@@ -1,27 +1,58 @@
-import { HStack, IconButton, Text } from 'native-base';
+import { Box, HStack, IconButton, NavItem, Text } from 'native-base';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useState } from 'react';
 
 export default function AppHeader(){
+    const [isMenuPress, setIsMenuPress] = useState(false)
+    const [isSearchPress, setIsSearchPress] = useState(false)
+    
+    const handleNavMenuPress = () => {
+        setIsMenuPress(!isMenuPress)
+        setIsSearchPress(false)
+    }
+    const handleSearchPress = () => {
+        setIsSearchPress(!isSearchPress)
+        setIsMenuPress(false)
+    }
+    
     return(
-        <HStack p={2} bg="violet.600" justifyContent="space-between" alignItems="center">
-            <IconButton
-                rounded='full'
-                icon={<MaterialIcons name="menu" size={24} color="white" />}
-                onPress={() => { console.log("pressed nav menu")
-                // Handle menu button press
-                }}
-            />
-            <Text fontSize="xl" fontWeight="bold" color="white">
-                My App
-            </Text>
-            <IconButton
-                rounded='full'
-                icon={<MaterialIcons name="search" size={24} color="white" />}
-                onPress={() => { console.log("pressed search")
-                // Handle search button press
-                }}
-            />
-        </HStack>
+        <Box p={2}>
+            <HStack p={2} bg="violet.600" justifyContent="space-between" alignItems="center">
+                <IconButton
+                    rounded='full'
+                    icon={<MaterialIcons name="menu" size={24} color="white" />}
+                    onPress={handleNavMenuPress}
+                />
+                <Text fontSize="xl" fontWeight="bold" color="white">
+                    My App
+                </Text>
+                <IconButton
+                    rounded='full'
+                    icon={<MaterialIcons name="search" size={24} color="white" />}
+                    onPress={handleSearchPress}
+                />
+            </HStack>
+            { isMenuPress && (
+                <Box bg="white" p={4}>
+                    <HStack justifyContent="space-around">
+                        <Text fontSize="md" fontWeight="bold" color="gray.500" p={2}>
+                            NavItem
+                        </Text>
+                    </HStack>
+                </Box>
+             )
+            }
+            { isSearchPress && (
+                <Box bg="white" p={4}>
+                    <HStack justifyContent="space-around">
+                        <Text fontSize="md" fontWeight="bold" color="gray.500" p={2}>
+                            Search...
+                        </Text>
+                    </HStack>
+                </Box>
+                )
+            }
+    </Box>
     )
 }
 /*
