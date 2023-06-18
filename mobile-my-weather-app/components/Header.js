@@ -3,6 +3,7 @@ import { Box, HStack, HamburgerIcon, IconButton, Menu, Pressable, Text } from 'n
 import { MaterialIcons } from '@expo/vector-icons';
 import { WiDayCloudy, WiThermometer } from 'weather-icons-react';
 import { HomeIcon, MoonIcon } from '@primer/octicons-react';
+import { NavigationContainer } from '@react-navigation/native';
 
 const navMenu = [
     { value: 0, label: 'Home', icon: <HomeIcon size={16} color="#121212"/> },
@@ -13,7 +14,7 @@ const navMenu = [
     { value: 5, label: 'About', icon: <MaterialIcons name='info-outline' size={18} color="#121212"/> }
 ]
 
-export default function AppHeader(){
+export default function AppHeader({ navigation }){
     const [isMenuPress, setIsMenuPress] = useState(false)
     const [isSearchPress, setIsSearchPress] = useState(false)
     
@@ -46,7 +47,7 @@ export default function AppHeader(){
                 >
                 { isMenuPress && (
                     navMenu.map( navItem =>
-                        <Menu.Item key={navItem.value} value={navItem.value} rounded='xl'>
+                        <Menu.Item key={navItem.value} value={navItem.value} rounded='xl' onPress={() => console.log(navigation.navigate(navItem.label))}>
                             { navItem.icon }{ navItem.label }
                         </Menu.Item>      
                         )
