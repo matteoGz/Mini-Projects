@@ -8,7 +8,7 @@ export default function WeatherScreen(){
         <>
             {/* <AppHeader/> */}
             <Content/>
-            <Footer/>
+            {/* <Footer/> */}
         </>
     )
 }

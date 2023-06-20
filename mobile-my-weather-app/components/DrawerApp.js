@@ -2,7 +2,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import AboutScreen from '../screens/AboutScreen';
 import TemperatureScreen from '../screens/TemperatureScreen';
 import WeatherScreen from '../screens/WeatherScreen';
-import HomeScreen from '../screens/Homescreen';
+import HomeScreen from '../screens/HomeScreen';
 import AdditionalInfoScreen from '../screens/AdditionalInfoScreen';
 import CustomDrawerContent from './CustomDrawerContent';
 import { navMenu } from '../models/navMenu';

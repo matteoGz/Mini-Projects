@@ -2,13 +2,17 @@ import 'react-native-gesture-handler';
 import { NativeBaseProvider } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import DrawerApp from './components/DrawerApp';
+import TabNav from './components/TabNav';
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <NativeBaseProvider>
+    <NativeBaseProvider>
+      <NavigationContainer>  
         <DrawerApp/>
-      </NativeBaseProvider>
-    </NavigationContainer>
+      </NavigationContainer>
+      <NavigationContainer>  
+        <TabNav/>
+      </NavigationContainer>
+    </NativeBaseProvider>
   );
 }

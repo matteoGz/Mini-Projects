@@ -8,7 +8,7 @@ export default function TemperatureScreen(){
         <>
             {/* <AppHeader/> */}
             <Content/>
-            <Footer/>
+            {/* <Footer/> */}
         </>
     )
 }

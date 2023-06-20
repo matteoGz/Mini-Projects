@@ -8,7 +8,7 @@ export default function AdditionalInfoScreen(){
         <>
             {/* <AppHeader/> */}
             <Content/>
-            <Footer/>
+            {/* <Footer/> */}
         </>
     )
 }

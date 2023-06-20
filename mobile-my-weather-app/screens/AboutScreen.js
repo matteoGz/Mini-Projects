@@ -9,13 +9,13 @@ export default function AboutScreen({ navigation }){
     return(
         <>
             {/* <AppHeader/> */}
+            <LogoGithubIcon/>
             <Button
                 onPress={() => navigation.navigate('Home')}
             >   
                 Back to home
             </Button>
-            <LogoGithubIcon/>
-            <Footer/>
+            {/* <Footer/> */}
         </>
     )
 }
