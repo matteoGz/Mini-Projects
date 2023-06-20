@@ -14,7 +14,7 @@ export default function HomeScreen({ navigation }){
     console.log("Home screen...")
     return(
         <>
-            <Drawer.Navigator
+            {/* <Drawer.Navigator
                 useLegacyImplementation
                 drawerContent={(props) => <CustomDrawerContent {...props} />}
             >  
@@ -43,7 +43,7 @@ export default function HomeScreen({ navigation }){
                     name={navMenu[5].label}
                     options={{ drawerIcon: () => navMenu[5].icon }}
                 />
-            </Drawer.Navigator>
+            </Drawer.Navigator> */}
             <Content/>
             <Button   
                 onPress={()=> navigation.navigate('About')}
