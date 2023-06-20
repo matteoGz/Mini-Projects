@@ -1,14 +1,13 @@
-import AppHeader from "../components/Header";
-import Content from "../components/Content";
-import Footer from "../components/Footer";
 import { LogoGithubIcon } from "@primer/octicons-react";
 import { Button } from "native-base";
+import DrawerApp from "../components/DrawerApp";
 
 export default function AboutScreen({ navigation }){
     console.log("About screen...")
     return(
         <>
             {/* <AppHeader/> */}
+            {DrawerApp}
             <LogoGithubIcon/>
             <Button
                 onPress={() => navigation.navigate('Home')}

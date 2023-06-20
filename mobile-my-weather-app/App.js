@@ -7,12 +7,7 @@ import TabNav from './components/TabNav';
 export default function App() {
   return (
     <NativeBaseProvider>
-      <NavigationContainer>  
-        <DrawerApp/>
-      </NavigationContainer>
-      <NavigationContainer>  
-        <TabNav/>
-      </NavigationContainer>
+      <TabNav/>
     </NativeBaseProvider>
   );
 }

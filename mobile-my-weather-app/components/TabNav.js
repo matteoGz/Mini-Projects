@@ -4,18 +4,21 @@ import WeatherScreen from '../screens/WeatherScreen';
 import TemperatureScreen from '../screens/TemperatureScreen';
 import AdditionalInfoScreen from '../screens/AdditionalInfoScreen';
 import AboutScreen from '../screens/AboutScreen';
-import { bottomTabs } from '../models/navMenu';
+import { navMenu } from '../models/navMenu';
+import { NavigationContainer } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 
 export default function TabNav(){
     return(
-        <Tab.Navigator>
-            <Tab.Screen name={bottomTabs[0].label} component={HomeScreen} />
-            <Tab.Screen name={bottomTabs[1].label} component={WeatherScreen} />
-            <Tab.Screen name={bottomTabs[2].label} component={TemperatureScreen} />
-            <Tab.Screen name={bottomTabs[3].label} component={AdditionalInfoScreen} />
-            <Tab.Screen name={bottomTabs[5].label} component={AboutScreen} />
-        </Tab.Navigator>
+        <NavigationContainer>
+            <Tab.Navigator initialRouteName={navMenu[0].label} screenOptions={{ headerShown: false }}>
+                <Tab.Screen name={navMenu[0].label} component={HomeScreen} />
+                <Tab.Screen name={navMenu[1].label} component={WeatherScreen} />
+                <Tab.Screen name={navMenu[2].label} component={TemperatureScreen} />
+                <Tab.Screen name={navMenu[3].label} component={AdditionalInfoScreen} />
+                <Tab.Screen name={navMenu[5].label} component={AboutScreen} />
+            </Tab.Navigator>
+        </NavigationContainer>
     )
 }
